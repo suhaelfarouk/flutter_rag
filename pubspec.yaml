@@ -1,0 +1,41 @@
+name: kuery_app
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  hooks_riverpod: ^2.4.5
+  flutter_hooks: ^0.20.3
+  riverpod_annotation: ^2.3.0
+  flutter_dotenv: ^5.1.0
+  syncfusion_flutter_pdf: ^23.1.42
+  path_provider: ^2.1.1
+  pinecone: ^0.7.2
+  langchain_pinecone: ^0.1.0+7
+  langchain_openai: ^0.7.0
+  langchain: ^0.7.4
+  langchain_community: ^0.3.0
+  dio: ^5.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner:
+  custom_lint:
+  riverpod_generator: ^2.3.5
+  riverpod_lint: ^2.3.3
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/pdf/
+    - .env
+
