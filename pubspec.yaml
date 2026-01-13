@@ -4,7 +4,8 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: '>=3.4.4 <4.0.0'
+  sdk: '>=3.9.0 <4.0.0'
+  flutter: '>=3.35.1'
 
 dependencies:
   flutter:
@@ -30,6 +31,8 @@ dev_dependencies:
   riverpod_generator: ^2.6.4
 
 dependency_overrides:
+  # Work around an analyzer_plugin/analyzer mismatch that breaks build_runner
+  # script compilation when using riverpod_generator 2.x.
   analyzer_plugin: 0.13.4
 
 flutter:
