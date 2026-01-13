@@ -60,7 +60,7 @@ class LangchainImplement implements LangchainService {
 
   @override
   Future<void> createPineconeIndex({required String indexName, required int vectorDimension}) async {
-    print("Checking $indexName");
+    log('Checking $indexName');
 
     try {
       final indexes = await PineconeControlPlaneService().getIndexes();
@@ -68,7 +68,7 @@ class LangchainImplement implements LangchainService {
       //   environment: dotenv.env['PINECONE_ENVIRONMENT']!,
       // );
       if (!indexes.contains(indexName)) {
-        print("Creating $indexName ...");
+        log('Creating $indexName ...');
         await PineconeControlPlaneService().createIndex(
           indexName: indexName,
           vectorDimension: vectorDimension,
@@ -84,10 +84,10 @@ class LangchainImplement implements LangchainService {
         //     metric: SearchMetric.cosine,
         //   ),
         // );
-        print('Creating index.... please wait for it to finish initializing.');
+        log('Creating index.... please wait for it to finish initializing.');
         // await Future.delayed(const Duration(seconds: 5));
       } else {
-        print("$indexName already exists");
+        log('$indexName already exists');
       }
     } catch (e) {
       log(e.toString());
@@ -130,14 +130,14 @@ class LangchainImplement implements LangchainService {
           'question': query,
         });
 
-        print(response);
+        log('QA response: $response');
 
         return response['output'];
       } else {
         return 'No results found';
       }
     } catch (e) {
-      print(e);
+      log('Error querying pinecone vector store: $e');
       throw Exception('Error querying pinecone index');
     }
   }
@@ -150,13 +150,13 @@ class LangchainImplement implements LangchainService {
       // print('Pinecone index retrieved: ${index.name}');
 
       for (final doc in docs) {
-        print('Processing document: ${doc.metadata['source']}');
+        log('Processing document: ${doc.metadata['source']}');
         final txtPath = doc.metadata['source'] as String;
         final text = doc.pageContent;
         const textSplitter = RecursiveCharacterTextSplitter(chunkSize: 1000);
         final chunks = textSplitter.createDocuments([text]);
-        print('Text split into ${chunks.length} chunks');
-        print('Calling OpenAI\'s Embedding endpoint documents with ${chunks.length} text chunks ...');
+        log('Text split into ${chunks.length} chunks');
+        log("Calling OpenAI's Embedding endpoint documents with ${chunks.length} text chunks ...");
 
         final chunksMap = chunks
             .map(
@@ -169,8 +169,8 @@ class LangchainImplement implements LangchainService {
             .toList();
 
         final embeddingArrays = await embeddings.embedDocuments(chunksMap);
-        print('Finished embedding documents');
-        print('Creating ${chunks.length} vectors array with id, values, and metadata...');
+        log('Finished embedding documents');
+        log('Creating ${chunks.length} vectors array with id, values, and metadata...');
 
         const batchSize = 100;
         for (int i = 0; i < chunks.length; i++) {
@@ -201,14 +201,14 @@ class LangchainImplement implements LangchainService {
             // request: UpsertRequest(vectors: chunkVectors),
             // );
 
-            print('Pinecone index updated with ${chunkVectors.length} vectors');
+            log('Pinecone index updated with ${chunkVectors.length} vectors');
 
             chunkVectors = [];
           }
         }
       }
     } catch (e) {
-      print(e);
+      log('Error updating pinecone index: $e');
     }
   }
 }

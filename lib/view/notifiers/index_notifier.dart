@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:langchain/langchain.dart';
@@ -33,7 +34,7 @@ class IndexNotifier extends _$IndexNotifier {
       state = IndexState.loaded;
     } catch (e) {
       state = IndexState.error;
-      print(e);
+      log('Failed to create/upload index: $e');
     }
   }
 

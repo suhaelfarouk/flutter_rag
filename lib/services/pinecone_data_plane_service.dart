@@ -32,11 +32,11 @@ class PineconeDataPlaneService {
         log('Query successful: ${response.data}');
         return response.data;
       } else {
-        print('Query failed with status: ${response.statusCode}');
+        log('Query failed with status: ${response.statusCode}');
         return '';
       }
     } catch (e) {
-      print('Error querying Pinecone: $e');
+      log('Error querying Pinecone: $e');
       return '';
     }
   }
@@ -53,14 +53,14 @@ class PineconeDataPlaneService {
         data: data,
       );
       if (response.statusCode == 200) {
-        print('Upsert successful: ${response.data}');
+        log('Upsert successful: ${response.data}');
         return response.data['id'];
       } else {
-        print('Upsert failed with status: ${response.statusCode}');
+        log('Upsert failed with status: ${response.statusCode}');
         return '';
       }
     } catch (e) {
-      print('Error upserting vector: $e');
+      log('Error upserting vector: $e');
       return '';
     }
   }
