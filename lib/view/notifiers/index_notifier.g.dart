@@ -6,7 +6,7 @@ part of 'index_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$indexNotifierHash() => r'3a9c4735822e7300a0d878662873656603fa6881';
+String _$indexNotifierHash() => r'aecdd9948909d4e12eb249d564433b843a49ded8';
 
 /// See also [IndexNotifier].
 @ProviderFor(IndexNotifier)
@@ -23,4 +23,4 @@ final indexNotifierProvider =
 
 typedef _$IndexNotifier = AutoDisposeNotifier<IndexState>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

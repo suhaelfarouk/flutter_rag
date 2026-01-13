@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_community/langchain_community.dart';
@@ -33,7 +34,7 @@ class IndexNotifier extends _$IndexNotifier {
       state = IndexState.loaded;
     } catch (e) {
       state = IndexState.error;
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

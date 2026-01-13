@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PineconeControlPlaneService {
@@ -19,7 +20,7 @@ class PineconeControlPlaneService {
       final List<String> indexNames = indexes.map((index) => index['name'] as String).toList();
       return indexNames;
     } catch (e) {
-      print('Error fetching indexes: $e');
+      debugPrint('Error fetching indexes: $e');
       return [];
     }
   }
@@ -41,9 +42,9 @@ class PineconeControlPlaneService {
         },
         'deletion_protection': false,
       });
-      print('Index created: ${response.data}');
+      debugPrint('Index created: ${response.data}');
     } catch (e) {
-      print('Error creating index: $e');
+      debugPrint('Error creating index: $e');
     }
   }
 }

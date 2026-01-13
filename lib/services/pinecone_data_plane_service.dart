@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PineconeDataPlaneService {
@@ -32,11 +33,11 @@ class PineconeDataPlaneService {
         log('Query successful: ${response.data}');
         return response.data;
       } else {
-        print('Query failed with status: ${response.statusCode}');
+        debugPrint('Query failed with status: ${response.statusCode}');
         return '';
       }
     } catch (e) {
-      print('Error querying Pinecone: $e');
+      debugPrint('Error querying Pinecone: $e');
       return '';
     }
   }
@@ -53,14 +54,14 @@ class PineconeDataPlaneService {
         data: data,
       );
       if (response.statusCode == 200) {
-        print('Upsert successful: ${response.data}');
+        debugPrint('Upsert successful: ${response.data}');
         return response.data['id'];
       } else {
-        print('Upsert failed with status: ${response.statusCode}');
+        debugPrint('Upsert failed with status: ${response.statusCode}');
         return '';
       }
     } catch (e) {
-      print('Error upserting vector: $e');
+      debugPrint('Error upserting vector: $e');
       return '';
     }
   }

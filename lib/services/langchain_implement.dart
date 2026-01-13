@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:kuery_app/services/langchain_service.dart';
@@ -60,7 +61,7 @@ class LangchainImplement implements LangchainService {
 
   @override
   Future<void> createPineconeIndex({required String indexName, required int vectorDimension}) async {
-    print("Checking $indexName");
+    debugPrint("Checking $indexName");
 
     try {
       final indexes = await PineconeControlPlaneService().getIndexes();
@@ -68,7 +69,7 @@ class LangchainImplement implements LangchainService {
       //   environment: dotenv.env['PINECONE_ENVIRONMENT']!,
       // );
       if (!indexes.contains(indexName)) {
-        print("Creating $indexName ...");
+        debugPrint("Creating $indexName ...");
         await PineconeControlPlaneService().createIndex(
           indexName: indexName,
           vectorDimension: vectorDimension,
@@ -84,10 +85,10 @@ class LangchainImplement implements LangchainService {
         //     metric: SearchMetric.cosine,
         //   ),
         // );
-        print('Creating index.... please wait for it to finish initializing.');
+        debugPrint('Creating index.... please wait for it to finish initializing.');
         // await Future.delayed(const Duration(seconds: 5));
       } else {
-        print("$indexName already exists");
+        debugPrint("$indexName already exists");
       }
     } catch (e) {
       log(e.toString());
@@ -130,14 +131,14 @@ class LangchainImplement implements LangchainService {
           'question': query,
         });
 
-        print(response);
+        debugPrint(response.toString());
 
         return response['output'];
       } else {
         return 'No results found';
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       throw Exception('Error querying pinecone index');
     }
   }
@@ -145,18 +146,18 @@ class LangchainImplement implements LangchainService {
   @override
   Future<void> updatePineconeIndex({required String indexName, required List<Document> docs}) async {
     try {
-      // print("Retrieving Pinecone index...");
+      // debugPrint("Retrieving Pinecone index...");
       // final index = await client.describeIndex(indexName: indexName, environment: dotenv.env['PINECONE_ENVIRONMENT']!);
-      // print('Pinecone index retrieved: ${index.name}');
+      // debugPrint('Pinecone index retrieved: ${index.name}');
 
       for (final doc in docs) {
-        print('Processing document: ${doc.metadata['source']}');
+        debugPrint('Processing document: ${doc.metadata['source']}');
         final txtPath = doc.metadata['source'] as String;
         final text = doc.pageContent;
         const textSplitter = RecursiveCharacterTextSplitter(chunkSize: 1000);
         final chunks = textSplitter.createDocuments([text]);
-        print('Text split into ${chunks.length} chunks');
-        print('Calling OpenAI\'s Embedding endpoint documents with ${chunks.length} text chunks ...');
+        debugPrint('Text split into ${chunks.length} chunks');
+        debugPrint('Calling OpenAI\'s Embedding endpoint documents with ${chunks.length} text chunks ...');
 
         final chunksMap = chunks
             .map(
@@ -169,8 +170,8 @@ class LangchainImplement implements LangchainService {
             .toList();
 
         final embeddingArrays = await embeddings.embedDocuments(chunksMap);
-        print('Finished embedding documents');
-        print('Creating ${chunks.length} vectors array with id, values, and metadata...');
+        debugPrint('Finished embedding documents');
+        debugPrint('Creating ${chunks.length} vectors array with id, values, and metadata...');
 
         const batchSize = 100;
         for (int i = 0; i < chunks.length; i++) {
@@ -201,14 +202,14 @@ class LangchainImplement implements LangchainService {
             // request: UpsertRequest(vectors: chunkVectors),
             // );
 
-            print('Pinecone index updated with ${chunkVectors.length} vectors');
+            debugPrint('Pinecone index updated with ${chunkVectors.length} vectors');
 
             chunkVectors = [];
           }
         }
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }
